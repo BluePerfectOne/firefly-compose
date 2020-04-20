@@ -1,0 +1,10 @@
+# pg_dump -Fc -U firefly firefly > firefly-backup.dump
+
+$ docker cp 
+
+Steps to update the application
+- Open the Docker Dashboard
+- Stop and delete the firefly iii app
+- Open the command prompt to D:\Projects\firefly-compose (or cd to D:\Projects\firefly-compose)
+- Run the command $ docker-compose pull firefly_iii_app
+- Run the command $ docker-compose up -d
