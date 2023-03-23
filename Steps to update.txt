@@ -6,6 +6,64 @@ Steps to update the application
 - Open the Docker Dashboard
 - Stop and delete the firefly iii app
 - Open the command prompt (or Git Bash) to D:\Projects\firefly-compose (or cd to D:\Projects\firefly-compose)
-- Run the command $ docker-compose pull firefly_iii_app
+While docker is running:
+- Run the command $ docker-compose pull app
 - Run the command $ docker-compose up -d
-... and you're done
+... wait 20 seconds for startup checks to finish and you're done
+
+
+Get container ID
+$ docker ps
+
+Steps to get error logs
+- Open the command prompt
+- Run the command $ docker ps
+- Lookup the container id in leftmost column for firefly app (12 digits, like 328e5549c19e)
+- Run the command $ docker logs -f [container id] - An example: docker logs -f 328e5549c19e
+
+
+Setup cron
+Make sure you have curl installed
+If not already set, set the variable in .env
+STATIC_CRON_TOKEN=0123456789ABCDEF0123456789ABCDEF
+
+Use windows Task scheduler to run daily task to run
+C:\windows\system32\cmd.exe
+Parameters: /c "curl localhost/api/v1/cron/0123456789ABCDEF0123456789ABCDEF" >> d:\Projects\firefly-compose\scheduled_run.log
+Documentation for cmd.exe
+https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cmd
+Documentation for curl
+https://curl.se/docs/
+Task scheduler documentation
+https://docs.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page
+
+Setup for backups
+
+Backup
+docker-compose up -d
+source backup.sh
+
+Restore
+docker-compose down -v && docker-compose up -d
+source restore.sh ./bak/dump_22-02-2020_15_43_44-all-in.dump
+
+backup.sh
+#!/usr/bin/env bash
+mkdir -p bak
+docker-compose exec -T firefly_iii_db pg_dump -Fc -U firefly firefly > "./bak/dump_$(date +%d-%m-%Y_%H_%M_%S).dump"
+
+restore.sh
+#!/usr/bin/env bash
+if [ -z "$1" ]; then
+    echo "Usage:"
+    echo "source restore.sh ./bak/backup.gz"
+fi
+cat "$1" | docker-compose exec -T firefly_iii_db pg_restore --clean -U firefly -d firefly
+
+
+docker exec --user www-data CONTAINERID /usr/local/bin/php /var/www/html/artisan firefly-iii:cron --date=2022-02-08
+
+Format YYYY-MM-DD
+
+To get the docker container list
+$ docker container list :

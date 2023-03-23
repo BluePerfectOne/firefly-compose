@@ -1,5 +1,3 @@
-APP_API_ENABLE=true
-
 # You can leave this on "local". If you change it to production most console commands will ask for extra confirmation.
 # Never set it to "testing".
 APP_ENV=local
@@ -29,7 +27,7 @@ DEFAULT_LOCALE=equal
 # Change this value to your preferred time zone.
 # Example: Europe/Amsterdam
 # For a list of supported time zones, see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-TZ=Europe/Helsinki
+TZ=Europe/Amsterdam
 
 # TRUSTED_PROXIES is a useful variable when using Docker and/or a reverse proxy.
 # Set it to ** and reverse proxies work just fine.
@@ -254,7 +252,7 @@ ALLOW_WEBHOOKS=false
 #
 # For more info: https://docs.firefly-iii.org/firefly-iii/advanced-installation/cron/
 #
-STATIC_CRON_TOKEN=0123456789ABCDEF0123456789ABCDEF
+STATIC_CRON_TOKEN=
 
 # You can fine tune the start-up of a Docker container by editing these environment variables.
 # Use this at your own risk. Disabling certain checks and features may result in lost of inconsistent data.
@@ -293,7 +291,6 @@ ADLDAP_CONNECTION=default
 BROADCAST_DRIVER=log
 QUEUE_DRIVER=sync
 CACHE_PREFIX=firefly
-SEARCH_RESULT_LIMIT=50
 PUSHER_KEY=
 IPINFO_TOKEN=
 PUSHER_SECRET=
